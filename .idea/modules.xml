@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/nuxt-sample.iml" filepath="$PROJECT_DIR$/.idea/nuxt-sample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/szdankal-web-pc.iml" filepath="$PROJECT_DIR$/.idea/szdankal-web-pc.iml" />
     </modules>
   </component>
 </project>
