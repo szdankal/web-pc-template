@@ -17,6 +17,7 @@ module.exports = {
   },
   router: {
     // middleware: ['wx-login']
+    middleware: 'scroll-to-top'
   },
   /*
    ** Customize the progress-bar color
