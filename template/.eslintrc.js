@@ -30,6 +30,8 @@ module.exports = {
       js: 'never',
       vue: 'never'
     }],
+    //Since you're working on all operating system, 
+    "linebreak-style": 0,
     'semi':0,
     // disallow reassignment of function parameters
     // disallow parameter object manipulation except for specific exclusions
