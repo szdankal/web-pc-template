@@ -1,4 +1,4 @@
-export default function (context) {
+export default function () {
   if (process.browser) {
     window.scrollTo(0, 0)
   }
