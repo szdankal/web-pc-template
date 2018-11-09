@@ -1,29 +1,88 @@
 /**
- * Created by IvanCai on 2017/4/19.
+ * @author IvanCai
+ * @description 自定义 axios 请求器
  */
-import axios from 'axios'
-import utils from './dk-utils'
-import { apiDomain } from '../configs/enviroment'
+import axios from 'axios';
 
-const dkAxios = axios.create({
-  baseURL: apiDomain,
-  timeout: 10000, // 设置超时时间
-})
-dkAxios.interceptors.request.use((config) => {
-  config.headers = { 'X-Access-Token': utils.getCookie('pagerbox_token') }
-  return config;
-}, error => Promise.reject(error));
+import utils from './dk-utils';
+import { Domain } from '../configs/env';
 
-
-dkAxios.interceptors.response.use(response => response, (error) => {
-  const { status, data } = error.response
-  switch (status) {
-    case 401:
-      break
-    case 412:
-      break
-    default:
-      return Promise.reject(data);
-  }
+const DKAxios = axios.create({
+  baseURL: Domain,
+  // 设置超时时间
+  timeout: 5000,
 });
-export default dkAxios
+
+let timer;
+
+DKAxios.interceptors.request.use(
+  // eslint-disable-next-line
+  config => {
+    const token = utils.getCookie('token');
+
+    if (token) {
+      Object.assign(config.headers, {
+        'X-Access-Token': token,
+      });
+    }
+
+    if (timer) {
+      clearTimeout(timer);
+    }
+
+    // 配置延时 Loading， 解决请求响应快的闪烁问题
+    timer = setTimeout(() => {
+      window.vm.$loading();
+    }, 750);
+
+    return config;
+  },
+
+  // eslint-disable-next-line
+  error => {
+    if (timer) {
+      clearTimeout(timer);
+    }
+
+    window.vm.$loading.close();
+
+    return Promise.reject(error);
+  },
+);
+
+DKAxios.interceptors.response.use(
+  // eslint-disable-next-line
+  response => {
+    if (timer) {
+      clearTimeout(timer);
+    }
+
+    window.vm.$loading.close();
+
+    return response;
+  },
+
+  // eslint-disable-next-line
+  error => {
+    if (timer) {
+      clearTimeout(timer);
+    }
+
+    window.vm.$loading.close();
+
+    if (!error.response) return;
+
+    const { status, data } = error.response;
+
+    switch (status) {
+      case 401:
+      case 412:
+        utils.setCookie('token', '', -1);
+        break;
+      default:
+        Promise.reject(data);
+    }
+  },
+);
+
+export default DKAxios;
