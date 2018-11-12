@@ -21,7 +21,15 @@ module.exports = {
   settings: {
     'import/resolver': {
       webpack: {
-        config: 'build/webpack.base.conf.js',
+        config: {
+          resolve: {
+            extensions: ['.js', '.vue', '.json'],
+            alias: {
+              '~': __dirname,
+              '@': __dirname,
+            },
+          },
+        },
       },
     },
   },
@@ -60,18 +68,5 @@ module.exports = {
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'linebreak-style': 'off',
-  },
-  settings: {
-    'import/resolver': {
-      webpack: {
-        config: {
-          resolve: {
-            alias: {
-              '~': __dirname,
-            },
-          },
-        },
-      },
-    },
   },
 };
