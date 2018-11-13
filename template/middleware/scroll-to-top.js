@@ -1,5 +1,5 @@
 export default function () {
   if (process.browser) {
-    window.scrollTo(0, 0)
+    window.scrollTo(0, 0);
   }
 }
